@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HQMEditorDedicated
 {
-    class Chat
+    public class Chat
     {
         const int LAST_MESSAGE = 0x00CFA430;
         const int MESSAGE_COUNT = 0x00CFA534;

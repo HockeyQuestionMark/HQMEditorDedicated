@@ -9,7 +9,7 @@ namespace HQMEditorDedicated
     /// <summary>
     /// Contains information about the Puck
     /// </summary>
-    class Puck
+    public class Puck
     {
         const int PUCK_TRANSFORM_ADDRESS = 0x0187B6F0;
         const int PUCK_VELOCITY_OFFSET = 0x3C;

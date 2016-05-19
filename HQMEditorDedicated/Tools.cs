@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HQMEditorDedicated
 {
-    class Tools
+    public class Tools
     {
         /// <summary>
         /// Pauses time on the clock

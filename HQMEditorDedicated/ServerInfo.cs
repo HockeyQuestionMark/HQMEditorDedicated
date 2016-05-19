@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HQMEditorDedicated
 {
-    class ServerInfo
+    public class ServerInfo
     {
         const int SERVER_NAME = 0x01C1400E;
         const int SERVER_PASSWORD = 0x00438704;
