@@ -4,6 +4,7 @@ A library for editing HockeyQuestionMark Memory.
 Only tested with 0.55g, although some things may work on 0.55f.
 
 http://www.hockeyquestionmark.com/
+
 https://www.reddit.com/r/hockeyquestionmark/
 
 Instructions:
