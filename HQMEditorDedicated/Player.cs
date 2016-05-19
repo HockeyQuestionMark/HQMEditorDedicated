@@ -189,7 +189,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public HQMVector Position
         {
-            get { return MemoryEditor.ReadHQMVector(PLAYER_TRANSFORM_LIST_ADDRESS + ID * PLAYER_TRANSFORM_SIZE); }
+            get { return MemoryEditor.ReadHQMVector(PLAYER_TRANSFORM_LIST_ADDRESS + (ID - 1) * PLAYER_TRANSFORM_SIZE); }
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public float SinRotation
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_TRANSFORM_LIST_ADDRESS + ID * PLAYER_TRANSFORM_SIZE + PLAYER_SIN_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_TRANSFORM_LIST_ADDRESS + (ID - 1) * PLAYER_TRANSFORM_SIZE + PLAYER_SIN_ROTATION_OFFSET); }
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public float CosRotation
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_TRANSFORM_LIST_ADDRESS + ID * PLAYER_TRANSFORM_SIZE + PLAYER_COS_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_TRANSFORM_LIST_ADDRESS + (ID - 1) * PLAYER_TRANSFORM_SIZE + PLAYER_COS_ROTATION_OFFSET); }
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public HQMVector StickPosition
         {
-            get { return MemoryEditor.ReadHQMVector(PLAYER_TRANSFORM_LIST_ADDRESS + ID * PLAYER_TRANSFORM_SIZE + STICK_POSITION_OFFSET); }
+            get { return MemoryEditor.ReadHQMVector(PLAYER_TRANSFORM_LIST_ADDRESS + (ID - 1) * PLAYER_TRANSFORM_SIZE + STICK_POSITION_OFFSET); }
         }
     }
 
