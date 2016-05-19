@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-namespace HQMRules
+namespace HQMEditorDedicated
 {
     public static class MemoryEditor
     {
@@ -107,6 +107,11 @@ namespace HQMRules
             return Encoding.ASCII.GetString(buffer).Split('\0')[0];
         }
 
+        /// <summary>
+        /// Write a string to memory
+        /// </summary>
+        /// /// <param name="str">the string to write</param>
+        /// <param name="address">the address to write to</param>        
         public static void WriteString(string str, int address)
         {
             int bytesWritten = 0;
@@ -147,6 +152,13 @@ namespace HQMRules
             HQMVector v = new HQMVector(posArray[0], posArray[1], posArray[2]);
 
             return v;
+        }
+
+        public static int WriteBytes(int address, byte[] bytes)
+        {
+            int bytesRead = 0;
+            WriteProcessMemory((int)hockeyProcessHandle, address, bytes, bytes.Length, ref bytesRead);
+            return bytesRead;
         }
     }
 }
