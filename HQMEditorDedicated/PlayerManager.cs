@@ -17,30 +17,10 @@ namespace HQMEditorDedicated
             get
             {
                 List<Player> playerList = new List<Player>();
-                for (int i = 0; i < ServerInfo.PlayerCount; i++)
+                for (int i = 0; i < ServerInfo.MaxPlayerCount; i++)
                 {
                     Player player = new Player(i);
-                    if (player.InServer)
-                        playerList.Add(player);
-                }
-
-                return playerList.ToArray();
-            }
-        }
-
-        /// <summary>
-        /// An array of empty Player slots in the server
-        /// </summary>
-        public static Player[] EmptySlots
-        {
-            get
-            {
-                List<Player> playerList = new List<Player>();
-                for (int i = 0; i < ServerInfo.PlayerCount; i++)
-                {
-                    Player player = new Player(i);
-                    if (!player.InServer)
-                        playerList.Add(player);
+                    playerList.Add(player);
                 }
 
                 return playerList.ToArray();

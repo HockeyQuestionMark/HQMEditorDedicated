@@ -27,6 +27,7 @@ namespace HQMEditorDedicated
         const int HEAD_Y_ROTATION_OFFSET = 0x7C;
         const int GOALS_OFFSET = 0x88;
         const int ASSISTS_OFFSET = 0x8C;
+        const int ADMIN_OFFSET = 0x90;
 
         const int PLAYER_TRANSFORM_LIST_ADDRESS = 0x0187C2C8;
         const int PLAYER_TRANSFORM_SIZE = 0xBD8;
@@ -35,7 +36,7 @@ namespace HQMEditorDedicated
         const int PLAYER_COS_ROTATION_OFFSET = 0x20;
         const int STICK_POSITION_OFFSET = 0x90;
 
-        private int m_Slot;
+        public readonly int Slot;
 
         /// <summary>
         /// Creates a new Player object using the specified server slot
@@ -43,23 +44,23 @@ namespace HQMEditorDedicated
         /// <param name="slot">The slot in the server list (0 based)</param>
         internal Player(int slot)
         {
-            this.m_Slot = slot;
-        }
+            this.Slot = slot;
+        }        
 
         /// <summary>
         /// Returns true if the player is in the server
         /// </summary>
         public bool InServer
         {
-            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + IN_SERVER_OFFSET) == 1; }
+            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + IN_SERVER_OFFSET) == 1; }
         }
 
         /// <summary>
         /// The player's id, used to get it's location data
         /// </summary>
-        public int ID
+        private int OnIceID
         {
-            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + ID_OFFSET); }
+            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + ID_OFFSET); }
         }
 
         /// <summary>
@@ -67,8 +68,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public HQMTeam Team
         {
-            get { return (HQMTeam)MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + TEAM_OFFSET); }
-            set { MemoryEditor.WriteInt((int)value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + TEAM_OFFSET); }
+            get { return (HQMTeam)MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + TEAM_OFFSET); }
+            set { MemoryEditor.WriteInt((int)value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + TEAM_OFFSET); }
         }
 
         /// <summary>
@@ -76,8 +77,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public HQMRole Role
         {
-            get { return (HQMRole)MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + ROLE_OFFSET); }
-            set { MemoryEditor.WriteInt((int)value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + ROLE_OFFSET); }
+            get { return (HQMRole)MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + ROLE_OFFSET); }
+            set { MemoryEditor.WriteInt((int)value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + ROLE_OFFSET); }
         }
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public int LockoutTime
         {
-            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + LOCKOUT_TIME_OFFSET); }
+            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + LOCKOUT_TIME_OFFSET); }
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public string Name
         {
-            get { return MemoryEditor.ReadString(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + PLAYER_NAME_OFFSET, 24); }
+            get { return MemoryEditor.ReadString(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + PLAYER_NAME_OFFSET, 24); }
         }
 
         /// <summary>
@@ -101,8 +102,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public float StickAngle
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_ANGLE_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_ANGLE_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + STICK_ANGLE_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + STICK_ANGLE_OFFSET); }
         }
 
         /// <summary>
@@ -110,8 +111,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public float Turning
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + TURNING_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + TURNING_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + TURNING_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + TURNING_OFFSET); }
         }
 
         /// <summary>
@@ -119,8 +120,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public float ForwardBack
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + FORWARD_BACK_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + FORWARD_BACK_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + FORWARD_BACK_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + FORWARD_BACK_OFFSET); }
         }
 
         /// <summary>
@@ -128,8 +129,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public float StickXRotation
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_X_ROTATION_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_X_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + STICK_X_ROTATION_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + STICK_X_ROTATION_OFFSET); }
         }
 
         /// <summary>
@@ -137,8 +138,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public float StickYRotation
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_Y_ROTATION_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_Y_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + STICK_Y_ROTATION_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + STICK_Y_ROTATION_OFFSET); }
         }
 
         /// <summary>
@@ -146,8 +147,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public int LegState
         {
-            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + LEG_STATE_OFFSET); }
-            set { MemoryEditor.WriteInt(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + LEG_STATE_OFFSET); }
+            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + LEG_STATE_OFFSET); }
+            set { MemoryEditor.WriteInt(value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + LEG_STATE_OFFSET); }
         }
 
         /// <summary>
@@ -155,8 +156,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public float HeadXRotation
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + HEAD_X_ROTATION_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + HEAD_X_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + HEAD_X_ROTATION_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + HEAD_X_ROTATION_OFFSET); }
         }
 
         /// <summary>
@@ -164,8 +165,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public float HeadYRotation
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + HEAD_Y_ROTATION_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + HEAD_Y_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + HEAD_Y_ROTATION_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + HEAD_Y_ROTATION_OFFSET); }
         }
 
         /// <summary>
@@ -173,7 +174,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public int Goals
         {
-            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + GOALS_OFFSET); }
+            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + GOALS_OFFSET); }
         }
 
         /// <summary>
@@ -181,7 +182,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public int Assists
         {
-            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + ASSISTS_OFFSET); }
+            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + ASSISTS_OFFSET); }
         }
 
         /// <summary>
@@ -189,7 +190,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public HQMVector Position
         {
-            get { return MemoryEditor.ReadHQMVector(PLAYER_TRANSFORM_LIST_ADDRESS + (ID - 1) * PLAYER_TRANSFORM_SIZE); }
+            get { return MemoryEditor.ReadHQMVector(PLAYER_TRANSFORM_LIST_ADDRESS + (OnIceID - 1) * PLAYER_TRANSFORM_SIZE); }
         }
 
         /// <summary>
@@ -197,7 +198,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public float SinRotation
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_TRANSFORM_LIST_ADDRESS + (ID - 1) * PLAYER_TRANSFORM_SIZE + PLAYER_SIN_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_TRANSFORM_LIST_ADDRESS + (OnIceID - 1) * PLAYER_TRANSFORM_SIZE + PLAYER_SIN_ROTATION_OFFSET); }
         }
 
         /// <summary>
@@ -205,7 +206,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public float CosRotation
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_TRANSFORM_LIST_ADDRESS + (ID - 1) * PLAYER_TRANSFORM_SIZE + PLAYER_COS_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_TRANSFORM_LIST_ADDRESS + (OnIceID - 1) * PLAYER_TRANSFORM_SIZE + PLAYER_COS_ROTATION_OFFSET); }
         }
 
         /// <summary>
@@ -213,7 +214,15 @@ namespace HQMEditorDedicated
         /// </summary>
         public HQMVector StickPosition
         {
-            get { return MemoryEditor.ReadHQMVector(PLAYER_TRANSFORM_LIST_ADDRESS + (ID - 1) * PLAYER_TRANSFORM_SIZE + STICK_POSITION_OFFSET); }
+            get { return MemoryEditor.ReadHQMVector(PLAYER_TRANSFORM_LIST_ADDRESS + (OnIceID - 1) * PLAYER_TRANSFORM_SIZE + STICK_POSITION_OFFSET); }
+        }
+
+        /// <summary>
+        /// Returns true if the player is in the server
+        /// </summary>
+        public bool IsAdmin
+        {
+            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + ADMIN_OFFSET) == 1; }
         }
     }
 
@@ -232,6 +241,6 @@ namespace HQMEditorDedicated
         NoTeam = -1,
         Red = 0,
         Blue = 1
-    }
+    }  
 }
 

@@ -33,14 +33,14 @@ namespace HQMEditorDedicated
         /// <summary>
         /// Messages sent in the server
         /// </summary>
-        public static List<string> Messages
+        public static List<ChatMessage> Messages
         {
             get 
             {
-                List<string> messages = new List<string>();
-                for(int i = 0; i < MessageCount; i++)
+                List<ChatMessage> messages = new List<ChatMessage>();
+                for(int i = 0; i <= MessageCount; i++)
                 {
-                    messages.Add(MemoryEditor.ReadString(MESSAGES + MESSAGE_SIZE * i, 128));
+                    messages.Add(new ChatMessage(MESSAGES + MESSAGE_SIZE * i));
                 }
                 return messages;
             }
@@ -64,10 +64,26 @@ namespace HQMEditorDedicated
             MemoryEditor.WriteInt(2, offset2);
             MemoryEditor.WriteInt(-1, msgIndexOffset);
             MemoryEditor.WriteInt(message.Length, msgLengthOffset);
-            MemoryEditor.WriteString(message, msgOffset);
-           
+            MemoryEditor.WriteString(message, msgOffset);           
             
             MessageCount = count;
+        }
+
+
+        public class ChatMessage
+        {
+            const int PLAYER_SLOT_OFFSET = -0x20;
+
+            public Player Sender;
+            public string Message;
+
+            internal ChatMessage(int address)
+            {
+                Message = MemoryEditor.ReadString(address, 64);
+                int slot = MemoryEditor.ReadInt(address + PLAYER_SLOT_OFFSET);
+                if(slot > -1)
+                    Sender = new Player(slot);
+            }
         }
     }
 }

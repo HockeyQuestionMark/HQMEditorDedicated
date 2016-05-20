@@ -11,6 +11,8 @@ namespace HQMEditorDedicated
         const int SERVER_NAME = 0x01C1400E;
         const int SERVER_PASSWORD = 0x00438704;
         const int PLAYER_COUNT = 0x00CFA400;
+        const int MAX_PLAYERS = 0x00438748;
+        const int UPTIME = 0x018931F0;
 
         /// <summary>
         /// The number of players in the server
@@ -36,6 +38,20 @@ namespace HQMEditorDedicated
         {
             get { return MemoryEditor.ReadString(SERVER_NAME, 100); }
             set { MemoryEditor.WriteString(value, SERVER_NAME); }
+        }
+
+        public static int MaxPlayerCount
+        {
+            get { return MemoryEditor.ReadInt(MAX_PLAYERS); }
+        }
+
+        /// <summary>
+        /// The amount of time the server has been active
+        /// </summary>
+        public static TimeSpan Uptime
+        {
+            get { return new TimeSpan(0, 0, MemoryEditor.ReadInt(UPTIME) / 100); }
+            set { MemoryEditor.WriteInt((int)value.TotalSeconds * 100, UPTIME); }
         }
     }
 }
