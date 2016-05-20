@@ -1,4 +1,10 @@
-﻿namespace HQMEditorDedicated
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HQMEditorDedicated
 {
     /// <summary>
     /// Contains information about the scores of the 2 teams
@@ -15,9 +21,6 @@
         const int SCOREBOARD_ADDRESS = 0x018931F8;
         const int RED_SCORE_OFFSET = 0x0;
         const int BLUE_SCORE_OFFSET = 0x4;
-
-        // const int GAME_OVER = 0x07D349AC; Not correct address
-
 
         /// <summary>
         /// The red team's score
@@ -40,10 +43,10 @@
         /// <summary>
         /// The game time in hundredths of a second
         /// </summary>
-        public static int GameTime
+        public static TimeSpan GameTime
         {
-            get { return MemoryEditor.ReadInt(TIME_ADDRESS + TIME_OFFSET); }
-            set { MemoryEditor.WriteInt(value, TIME_ADDRESS + TIME_OFFSET); }
+            get { return new TimeSpan(0, 0, MemoryEditor.ReadInt(TIME_ADDRESS + TIME_OFFSET) / 100); }
+            set { MemoryEditor.WriteInt((int)value.TotalSeconds * 100, TIME_ADDRESS + TIME_OFFSET); }
         }
 
         /// <summary>
@@ -72,16 +75,5 @@
             get { return MemoryEditor.ReadInt(STOP_TIME_ADDRESS); }
             set { MemoryEditor.WriteInt(value, STOP_TIME_ADDRESS); }
         }
-
-        /*/// <summary>
-        /// If the game is over
-        /// </summary>
-        public static bool IsGameOver
-        {
-            get { return MemoryEditor.ReadInt(GAME_OVER) == 1; }
-        }*/
-
-
-
     }
 }
