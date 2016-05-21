@@ -17,14 +17,18 @@ namespace HQMEditorDedicated
         [DllImport("kernel32.dll")]
         static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
+        [DllImport("kernel32.dll")]
+        static extern bool GetExitCodeProcess(int hProcess, ref int lpExitCode);
+
         private const int PROCESS_ALL_ACCESS = 0x1F0FFF;
         private static Process hockeyProcess = null;
-        private static IntPtr hockeyProcessHandle;
+        private static IntPtr hockeyProcessHandle;        
 
         // <summary>
-        /// Attaches to hockey.exe. Must be called before anything else. Make sure hockey is running
+        /// Attaches to hockeydedicated.exe. Must be called before anything else. Make sure hockey is running.
+        /// returns true if attach was succesful
         /// </summary>
-        public static void Init()
+        public static bool Init()
         {
             try
             {
@@ -32,11 +36,41 @@ namespace HQMEditorDedicated
             }
             catch (System.IndexOutOfRangeException e)  // CS0168
             {
-                System.Console.WriteLine(e.Message);
-
-                throw new System.ArgumentOutOfRangeException("no hockeydedicated.exe found", e);
+                return false;
             }
             hockeyProcessHandle = OpenProcess(PROCESS_ALL_ACCESS, false, hockeyProcess.Id);
+            return true;
+            
+        }
+
+        /// <summary>
+        /// Attaches to hockeydedicated.exe. Must be called before anything else. Make sure hockey is running. 
+        /// Use this if your hockeydedicated.exe is named differently.
+        /// returns true if attach was succesful
+        /// </summary>
+        /// <param name="processName">the address to read from</param>
+        public static bool Init(string processName)
+        {
+            try
+            {
+                hockeyProcess = Process.GetProcessesByName(processName)[0];
+            }
+            catch (System.IndexOutOfRangeException e)  // CS0168
+            {
+                return false;
+            }
+            hockeyProcessHandle = OpenProcess(PROCESS_ALL_ACCESS, false, hockeyProcess.Id);
+            return true;
+        }
+
+        // <summary>
+        /// Returns true if the memory editor is still attached to hockey
+        /// </summary>
+        public static bool IsAttached()
+        {
+            int ret = 0;
+            GetExitCodeProcess((int)hockeyProcessHandle, ref ret);
+            return ret == 259;
         }
 
         /// <summary>
