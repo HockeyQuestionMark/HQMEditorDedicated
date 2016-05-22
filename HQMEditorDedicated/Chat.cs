@@ -8,11 +8,14 @@ namespace HQMEditorDedicated
 {
     public class Chat
     {
+        const int PLAYER_SLOT_OFFSET = -0x20;
         const int LAST_MESSAGE = 0x00CFA430;
         const int MESSAGE_COUNT = 0x00CFA534;
         const int MESSAGES = 0x0106B620;
         const int MESSAGE_SIZE = 0x80;
 
+        const int COMMAND_SOURCE = 0x00438000;
+        const int COMMAND = 0x00CFA430;
         /// <summary>
         /// Number of messages sent to server
         /// </summary>
@@ -31,16 +34,37 @@ namespace HQMEditorDedicated
         }
 
         /// <summary>
+        /// The last command sent to the server. Must call RecordCommandSource() or this won't work.
+        /// </summary>
+        public static ChatMessage LastCommand
+        {
+            get
+            {
+                return new ChatMessage(COMMAND, COMMAND_SOURCE);
+            }
+        }
+
+        /// <summary>
+        /// Removes the last command from game memory. Usefull when checking if there is a new command
+        /// </summary>
+        public static void FlushLastCommand()
+        {
+            MemoryEditor.WriteInt(-1, COMMAND_SOURCE);
+            MemoryEditor.WriteString(new string(' ', 63), COMMAND);
+        }
+
+        /// <summary>
         /// Messages sent in the server
         /// </summary>
         public static List<ChatMessage> Messages
         {
-            get 
+            get
             {
                 List<ChatMessage> messages = new List<ChatMessage>();
-                for(int i = 0; i <= MessageCount; i++)
+                for (int i = 0; i <= MessageCount; i++)
                 {
-                    messages.Add(new ChatMessage(MESSAGES + MESSAGE_SIZE * i));
+                    int address = MESSAGES + MESSAGE_SIZE * i;
+                    messages.Add(new ChatMessage(address, address + PLAYER_SLOT_OFFSET));
                 }
                 return messages;
             }
@@ -64,24 +88,40 @@ namespace HQMEditorDedicated
             MemoryEditor.WriteInt(2, offset2);
             MemoryEditor.WriteInt(-1, msgIndexOffset);
             MemoryEditor.WriteInt(message.Length, msgLengthOffset);
-            MemoryEditor.WriteString(message, msgOffset);           
-            
+            MemoryEditor.WriteString(message, msgOffset);
+
             MessageCount = count;
+        }
+
+        /// <summary>
+        /// Forces the server to save the player index for commands starting with '/'
+        /// Thanks to u/tema2
+        /// </summary>
+        public static void RecordCommandSource()
+        {
+            byte[] code_original = new byte[6] { 0xE9, 0x09, 0x0B, 0x12, 0x00, 0x90 };
+            byte[] code_inject = new byte[18] { 0x8B, 0x55, 0x8C, 0x89, 0x15, 0x00, 0x80, 0x43, 0x00, 0x6B, 0xD2, 0x4C, 0xE9, 0xE7, 0xF4, 0xED, 0xFF, 0x90 };
+
+            int addr_original = 0x0040F4F2;
+            int addr_inject = 0x00530000;
+
+            MemoryEditor.WriteBytes(addr_inject, code_inject);
+            MemoryEditor.WriteBytes(addr_original, code_original);
         }
 
 
         public class ChatMessage
         {
-            const int PLAYER_SLOT_OFFSET = -0x20;
+
 
             public Player Sender;
             public string Message;
 
-            internal ChatMessage(int address)
+            internal ChatMessage(int address, int playerSlotAddress)
             {
                 Message = MemoryEditor.ReadString(address, 64);
-                int slot = MemoryEditor.ReadInt(address + PLAYER_SLOT_OFFSET);
-                if(slot > -1)
+                int slot = MemoryEditor.ReadInt(playerSlotAddress);
+                if (slot > -1)
                     Sender = new Player(slot);
             }
         }
