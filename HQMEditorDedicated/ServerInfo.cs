@@ -40,6 +40,9 @@ namespace HQMEditorDedicated
             set { MemoryEditor.WriteString(value, SERVER_NAME); }
         }
 
+        /// <summary>
+        /// The max number of players allowed on the server
+        /// </summary>
         public static int MaxPlayerCount
         {
             get { return MemoryEditor.ReadInt(MAX_PLAYERS); }

@@ -16,6 +16,7 @@ namespace HQMEditorDedicated
 
         const int COMMAND_SOURCE = 0x00438000;
         const int COMMAND = 0x00CFA430;
+
         /// <summary>
         /// Number of messages sent to server
         /// </summary>
@@ -112,8 +113,6 @@ namespace HQMEditorDedicated
 
         public class ChatMessage
         {
-
-
             public Player Sender;
             public string Message;
 

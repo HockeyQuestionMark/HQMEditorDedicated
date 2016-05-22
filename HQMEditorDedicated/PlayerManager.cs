@@ -28,6 +28,20 @@ namespace HQMEditorDedicated
         }
 
         /// <summary>
+        /// Attempts to find a player by slot
+        /// </summary>
+        /// <param name="slot">the slot the player is in</param>
+        /// <returns>A Player class or null if invalid slot given</returns>
+        public static Player GetPlayerFromSlot(int slot)
+        {
+            if (slot > ServerInfo.MaxPlayerCount || slot < 0)
+            {
+                return null;
+            }
+            return new Player(slot);
+        }
+
+        /// <summary>
         /// Attempts to find a player by name
         /// </summary>
         /// <param name="name">The name of the player to search for</param>

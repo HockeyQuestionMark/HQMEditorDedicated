@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("HQMEditorDedicated")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Longtail Studios")]
+[assembly: AssemblyCompany("Sam Haliburton")]
 [assembly: AssemblyProduct("HQMEditorDedicated")]
-[assembly: AssemblyCopyright("Copyright © Longtail Studios 2016")]
+[assembly: AssemblyCopyright("Copyright © Sam Haliburton 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
