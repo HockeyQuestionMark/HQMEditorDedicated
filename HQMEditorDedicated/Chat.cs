@@ -42,7 +42,10 @@ namespace HQMEditorDedicated
             get
             {
                 int ipIndex = MemoryEditor.ReadInt(COMMAND_SOURCE);
-                return new ChatMessage(COMMAND, (0x004138C0 + (ipIndex * 0x4C) + 0x08));
+                int playerIndex = MemoryEditor.ReadInt(0x004138C0 + (ipIndex * 0x4C) + 0x08);
+                if (ipIndex == -1)
+                    return null;
+                return new ChatMessage(COMMAND, playerIndex);
             }
         }
 
@@ -52,7 +55,7 @@ namespace HQMEditorDedicated
         public static void FlushLastCommand()
         {
             MemoryEditor.WriteInt(-1, COMMAND_SOURCE);
-            MemoryEditor.WriteString(new string(' ', 63), COMMAND);
+            MemoryEditor.WriteString(" \0", COMMAND);
         }
 
         /// <summary>
@@ -66,7 +69,7 @@ namespace HQMEditorDedicated
                 for (int i = 0; i <= MessageCount; i++)
                 {
                     int address = MESSAGES + MESSAGE_SIZE * i;
-                    messages.Add(new ChatMessage(address, address + PLAYER_SLOT_OFFSET));
+                    messages.Add(new ChatMessage(address, MemoryEditor.ReadInt(address + PLAYER_SLOT_OFFSET)));
                 }
                 return messages;
             }
@@ -117,12 +120,11 @@ namespace HQMEditorDedicated
             public Player Sender;
             public string Message;
 
-            internal ChatMessage(int address, int playerSlotAddress)
+            internal ChatMessage(int address, int playerSlot)
             {
-                Message = MemoryEditor.ReadString(address, 64);
-                int slot = MemoryEditor.ReadInt(playerSlotAddress);
-                if (slot > -1)
-                    Sender = new Player(slot);
+                Message = MemoryEditor.ReadString(address, 63);
+                if (playerSlot != -1)
+                    Sender = PlayerManager.Players[playerSlot];
             }
         }
     }
