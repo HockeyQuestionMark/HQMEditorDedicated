@@ -157,8 +157,8 @@ namespace HQMEditorDedicated
         /// <summary>
         /// Writes a Vector3 to memory.
         /// </summary>
-        /// <param name="v">float[] representing a Vector3.  x (width) = v[0]. y (height) = v[1], z (length) = v[2]</param>
-        /// <param name="address"> The address of the vector to write. Addresses are contained in HQMClientAddresses or HQMServerAddresses</param>
+        /// <param name="v">HQMVector to write</param>
+        /// <param name="address"> The address of the vector to write.</param>
         public static void WriteHQMVector(HQMVector v, int address)
         {
             int bytesWritten = 0;
@@ -172,8 +172,8 @@ namespace HQMEditorDedicated
         /// <summary>
         /// Reads a Vector3 from memory
         /// </summary>
-        /// <param name="address">The address of the Vector3 to write. . Addresses are contained in HQMClientAddresses or HQMServerAddresses</param>
-        /// <returns>float[] representing a Vector3. x (width) = v[0]. y (height) = v[1], z (length) = v[2]</returns>
+        /// <param name="address">The address of the Vector3 to write</param>
+        /// <returns>HQMVector </returns>
         public static HQMVector ReadHQMVector(int address)
         {
             int bytesRead = 0;
@@ -188,11 +188,31 @@ namespace HQMEditorDedicated
             return v;
         }
 
-        public static int WriteBytes(int address, byte[] bytes)
+        /// <summary>
+        /// Writes bytes to memory
+        /// </summary>
+        /// <param name="bytes">bytes to write</param>
+        /// <param name="address">The address to write the bytes to</param>
+        /// <returns>number of bytes written </returns>
+        public static int WriteBytes(byte[] bytes, int address)
+        {
+            int bytesWritten = 0;
+            WriteProcessMemory((int)hockeyProcessHandle, address, bytes, bytes.Length, ref bytesWritten);
+            return bytesWritten;
+        }
+
+        /// <summary>
+        /// Read bytes from memory
+        /// </summary>
+        /// <param name="address">The address to read the bytes from</param>
+        /// <param name="numBytes">The number of bytes to read</param>
+        /// <returns>bytes read from memory</returns>
+        public static byte[] ReadBytes(int address, int numBytes)
         {
             int bytesRead = 0;
-            WriteProcessMemory((int)hockeyProcessHandle, address, bytes, bytes.Length, ref bytesRead);
-            return bytesRead;
+            byte[] buffer = new byte[numBytes];
+            ReadProcessMemory((int)hockeyProcessHandle, address, buffer, buffer.Length, ref bytesRead);
+            return buffer;
         }
     }
 }

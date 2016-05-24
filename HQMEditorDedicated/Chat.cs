@@ -41,7 +41,8 @@ namespace HQMEditorDedicated
         {
             get
             {
-                return new ChatMessage(COMMAND, COMMAND_SOURCE);
+                int ipIndex = MemoryEditor.ReadInt(COMMAND_SOURCE);
+                return new ChatMessage(COMMAND, (0x004138C0 + (ipIndex * 0x4C) + 0x08));
             }
         }
 
@@ -106,8 +107,8 @@ namespace HQMEditorDedicated
             int addr_original = 0x0040F4F2;
             int addr_inject = 0x00530000;
 
-            MemoryEditor.WriteBytes(addr_inject, code_inject);
-            MemoryEditor.WriteBytes(addr_original, code_original);
+            MemoryEditor.WriteBytes(code_inject, addr_inject);
+            MemoryEditor.WriteBytes(code_original, addr_original);
         }
 
 

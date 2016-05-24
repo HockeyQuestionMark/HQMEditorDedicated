@@ -13,8 +13,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public static void PauseGame()
         {
-            MemoryEditor.WriteBytes(0x0040B65A, new byte[] { 75 });
-            MemoryEditor.WriteBytes(0x004078FB, new byte[] { 0 });
+            MemoryEditor.WriteBytes(new byte[] { 75 }, 0x0040B65A);
+            MemoryEditor.WriteBytes(new byte[] { 0 }, 0x004078FB);
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace HQMEditorDedicated
         /// </summary>
         public static void ResumeGame()
         {
-            MemoryEditor.WriteBytes(0x0040B65A, new byte[] { 0 });
-            MemoryEditor.WriteBytes(0x004078FB, new byte[] { 1 });
+            MemoryEditor.WriteBytes(new byte[] { 0 }, 0x0040B65A);
+            MemoryEditor.WriteBytes(new byte[] { 1 }, 0x004078FB);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace HQMEditorDedicated
         /// </summary>
         public static void ForceFaceoff()
         {
-            MemoryEditor.WriteBytes(0x01893200, new byte[] { 1 });
+            MemoryEditor.WriteBytes(new byte[] { 1 }, 0x01893200);
         }
     }
 }
