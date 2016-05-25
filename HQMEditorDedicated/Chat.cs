@@ -123,7 +123,7 @@ namespace HQMEditorDedicated
             internal ChatMessage(int address, int playerSlot)
             {
                 Message = MemoryEditor.ReadString(address, 63);
-                if (playerSlot != -1)
+                if (playerSlot >= 0 && playerSlot < PlayerManager.Players.Length)
                     Sender = PlayerManager.Players[playerSlot];
             }
         }
