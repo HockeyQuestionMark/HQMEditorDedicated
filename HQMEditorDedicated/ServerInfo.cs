@@ -19,7 +19,15 @@ namespace HQMEditorDedicated
         /// </summary>
         public static int PlayerCount
         {
-            get { return MemoryEditor.ReadInt(PLAYER_COUNT); }           
+            get 
+            {
+                int playerCount = 0;
+                foreach(Player p in PlayerManager.Players)
+                {
+                    if (p.InServer) playerCount++;
+                }
+                return playerCount;
+            }           
         }
 
         /// <summary>
