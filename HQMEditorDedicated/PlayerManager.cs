@@ -29,6 +29,25 @@ namespace HQMEditorDedicated
         }
 
         /// <summary>
+        /// An array of Player objects for every player in the server
+        /// </summary>
+        public static Player[] PlayersInServer
+        {
+            get
+            {
+                List<Player> playerList = new List<Player>();
+                for (int i = 0; i < ServerInfo.MaxPlayerCount; i++)
+                {
+                    Player player = new Player(i);
+                    if(player.InServer)
+                        playerList.Add(player);
+                }
+
+                return playerList.ToArray();
+            }
+        }
+
+        /// <summary>
         /// Attempts to find a player by name
         /// </summary>
         /// <param name="name">The name of the player to search for</param>
