@@ -21,6 +21,7 @@ namespace HQMEditorDedicated
         const int SCOREBOARD_ADDRESS = 0x018931F8;
         const int RED_SCORE_OFFSET = 0x0;
         const int BLUE_SCORE_OFFSET = 0x4;
+        const int GAME_OVER = 0x01893E0C;
 
         /// <summary>
         /// The red team's score
@@ -74,6 +75,15 @@ namespace HQMEditorDedicated
         {
             get { return MemoryEditor.ReadInt(STOP_TIME_ADDRESS); }
             set { MemoryEditor.WriteInt(value, STOP_TIME_ADDRESS); }
+        }
+
+        /// <summary>
+        /// If the current game is over
+        /// </summary>
+        public static bool IsGameOver
+        {
+            get { return MemoryEditor.ReadInt(GAME_OVER) == 1; }
+            set { MemoryEditor.WriteInt(value? 1 : 0, GAME_OVER); }
         }
     }
 }

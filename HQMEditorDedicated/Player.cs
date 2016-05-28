@@ -36,6 +36,10 @@ namespace HQMEditorDedicated
         const int PLAYER_COS_ROTATION_OFFSET = 0x20;
         const int STICK_POSITION_OFFSET = 0x90;
 
+        const int IP_LIST_ADDRESS = 0x004138C0;
+        const int IP_SIZE = 0x4C;
+        const int IP_LIST_PLAYER_INDEX_OFFSET = 0x08;
+
         public readonly int Slot;
 
         /// <summary>
@@ -224,6 +228,28 @@ namespace HQMEditorDedicated
         {
             get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + Slot * PLAYER_STRUCT_SIZE + ADMIN_OFFSET) == 1; }
         }
+
+
+        /// <summary>
+        /// The IP address of the player. Reversed for some reason.
+        /// </summary>
+        public byte[] IPAddress
+        {
+            get
+            {
+                int i = 0;
+                for(i = 0; i < ServerInfo.MaxPlayerCount; i++)
+                {
+                    if(Slot == MemoryEditor.ReadInt(IP_LIST_ADDRESS + (i*IP_SIZE) + IP_LIST_PLAYER_INDEX_OFFSET))
+                    {
+                        return MemoryEditor.ReadBytes(IP_LIST_ADDRESS + (i * IP_SIZE), 4);
+                    }
+                }
+                return new byte[4] { 0, 0, 0, 0 };
+            }
+        }
+
+
     }
 
     public enum HQMRole
