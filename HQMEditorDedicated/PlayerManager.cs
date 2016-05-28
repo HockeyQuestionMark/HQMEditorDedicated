@@ -10,8 +10,9 @@ namespace HQMEditorDedicated
     {
         const int BANNED_IP_COUNT = 0x01C142A8;
         const int BANNED_IP_LIST = 0x005BA2C0;
+
         /// <summary>
-        /// An array of Player objects for every player in the server
+        /// An array of Player objects for every player slot
         /// </summary>
         public static Player[] Players
         {
@@ -64,7 +65,6 @@ namespace HQMEditorDedicated
             return null;
         }
 
-
         /// <summary>
         /// A list of banned IPs. They are reversed for some reason.
         /// </summary>
@@ -81,7 +81,6 @@ namespace HQMEditorDedicated
                 return bannedIPs;
             }
         }
-
 
         /// <summary>
         /// Ban an ip. Best to use in conjunction with Player.IPAddress
