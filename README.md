@@ -18,7 +18,3 @@ Add to your project
 
 
 Always call MemoryEditor.Init() before using any library calls
-
-Contact: 
-
-samhaliburton@gmail.com
